@@ -1,0 +1,36 @@
+﻿@page "/login"
+@model SimpleeCommerceApp.Pages.LoginModel
+@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container py-5" style="max-width: 520px;">
+    <div class="card shadow-sm">
+        <div class="card-body p-4">
+            <h3 class="mb-3">Sign in</h3>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Error))
+            {
+                <div class="alert alert-danger">@Model.Error</div>
+            }
+
+            <form method="post" class="d-grid gap-3">
+                <div>
+                    <label class="form-label">Username</label>
+                    <input asp-for="Username" class="form-control" />
+                </div>
+
+                <div>
+                    <label class="form-label">Password</label>
+                    <input asp-for="Password" type="password" class="form-control" />
+                </div>
+
+                <button class="btn btn-primary" type="submit">Login</button>
+
+                <div class="text-muted small">
+                    Demo: <b>demo</b> / <b>P@ssw0rd!</b>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,213 @@
+﻿@page
+@model SimpleeCommerceApp.Pages.IndexModel
+@{
+    ViewData["Title"] = "Store";
+    var naira = "₦";
+}
+
+<div class="container py-4">
+
+    <div class="d-flex align-items-center justify-content-between mb-3">
+        <h3 class="mb-0">Store</h3>
+        <form method="post" asp-page-handler="Logout">
+            <button class="btn btn-outline-secondary btn-sm" type="submit">Logout</button>
+        </form>
+    </div>
+
+    @if (!string.IsNullOrWhiteSpace(Model.Error))
+    {
+        <div class="alert alert-danger">@Model.Error</div>
+    }
+
+    <div class="row g-4">
+
+        <!-- Products -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-2">
+                        <div class="d-flex align-items-center justify-content-between w-100">
+                            <h5 class="mb-0">Products</h5>
+                            <span class="text-muted small">@Model.ProductsPage.TotalCount item(s)</span>
+                        </div>
+
+                        <form method="get" class="w-100" style="max-width: 520px;">
+                            <div class="input-group">
+                                <span class="input-group-text">🔎</span>
+                                <input name="q"
+                                       value="@Model.Q"
+                                       class="form-control"
+                                       placeholder="Search products..."
+                                       autocomplete="off" />
+                                <input type="hidden" name="page" value="1" />
+                                <button class="btn btn-primary" type="submit">Search</button>
+
+                                @if (!string.IsNullOrWhiteSpace(Model.Q))
+                                {
+                                    <a class="btn btn-outline-secondary" href="?page=1">Clear</a>
+                                }
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th style="width:140px;">Price</th>
+                                <th style="width:110px;">Stock</th>
+                                <th style="width:220px;"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var p in Model.Products)
+                            {
+                                <tr>
+                                    <td>
+                                        <div class="fw-semibold">@p.Name</div>
+                                        @if (!string.IsNullOrWhiteSpace(p.Description))
+                                        {
+                                            <div class="text-muted small">@p.Description</div>
+                                        }
+                                    </td>
+                                    <td class="fw-semibold">@($"{naira}{p.Price:N2}")</td>
+                                    <td>
+                                        @if (p.StockQty > 0)
+                                        {
+                                            <span class="badge text-bg-success">@p.StockQty</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge text-bg-danger">Out</span>
+                                        }
+                                    </td>
+                                    <td class="text-end">
+                                        <form method="post" asp-page-handler="AddToCart" class="d-inline-flex gap-2">
+                                            <input type="hidden" name="productId" value="@p.Id" />
+                                            <input type="number"
+                                                   name="quantity"
+                                                   value="1"
+                                                   min="1"
+                                                   class="form-control form-control-sm"
+                                                   style="width:80px;" />
+                                            <button type="submit"
+                                                    class="btn btn-primary btn-sm"
+                                            @(p.StockQty <= 0 ? "disabled" : null)>
+                                                Add
+                                            </button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    @{
+                        var totalPages = Model.ProductsPage.TotalPages;
+                        var current = Model.ProductsPage.Page;
+                    }
+
+                    @if (totalPages > 1)
+                    {
+                        <div class="px-3 pb-3">                       
+                            <nav class="mt-3">
+                                <ul class="pagination">
+                                    <li class="page-item @(current <= 1 ? "disabled" : "")">
+                                        <a class="page-link" href="?q=@Model.Q&page=@(current - 1)">Previous</a>
+                                    </li>
+
+                                    @for (int p = Math.Max(1, current - 2); p <= Math.Min(totalPages, current + 2); p++)
+                                    {
+                                        <li class="page-item @(p == current ? "active" : "")">
+                                            <a class="page-link" href="?q=@Model.Q&page=@p">@p</a>
+                                        </li>
+                                    }
+
+                                    <li class="page-item @(current >= totalPages ? "disabled" : "")">
+                                        <a class="page-link" href="?q=@Model.Q&page=@(current + 1)">Next</a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="col-lg-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Cart</h5>
+                </div>
+
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <span class="text-muted">Items</span>
+                        <span class="fw-semibold">@Model.Cart.TotalItems</span>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+                        <span class="text-muted">Subtotal</span>
+                        <span class="fw-semibold">@($"{naira}{Model.Cart.SubTotal:N2}")</span>
+                    </div>
+
+                    <hr />
+
+                    @if (Model.Cart.Items.Count == 0)
+                    {
+                        <div class="text-muted">Your cart is empty.</div>
+                    }
+                    else
+                    {
+                        <div class="d-grid gap-3">
+                            @foreach (var item in Model.Cart.Items)
+                            {
+                                <div class="border rounded p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <div class="fw-semibold">@item.ProductName</div>
+                                            <div class="text-muted small">
+                                                Unit: @($"{naira}{item.UnitPrice:N2}")
+                                            </div>
+                                        </div>
+                                        <span class="badge text-bg-light">
+                                            @($"{naira}{(item.UnitPrice * item.Quantity):N2}")
+                                        </span>
+                                    </div>
+
+                                    <div class="d-flex gap-2 mt-2">
+                                        <form method="post" asp-page-handler="UpdateQty" class="d-flex gap-2 flex-grow-1">
+                                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                                            <input type="number"
+                                                   name="quantity"
+                                                   value="@item.Quantity"
+                                                   min="0"
+                                                   class="form-control form-control-sm"
+                                                   style="width:90px;" />
+                                            <button type="submit" class="btn btn-outline-primary btn-sm">
+                                                Update
+                                            </button>
+                                        </form>
+
+                                        <form method="post" asp-page-handler="Remove">
+                                            <input type="hidden" name="itemId" value="@item.ItemId" />
+                                            <button type="submit" class="btn btn-outline-danger btn-sm">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>

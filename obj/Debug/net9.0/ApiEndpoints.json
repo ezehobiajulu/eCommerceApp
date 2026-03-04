@@ -1,0 +1,143 @@
+[
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.AuthEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapAuthEndpoints\u003Eb__1_0",
+    "RelativePath": "api/auth/login",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "SimpleeCommerceApp.Api.AuthEndpoints\u002BLoginRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.CartEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapCartEndpoints\u003Eb__2_0",
+    "RelativePath": "api/cart/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.CartEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapCartEndpoints\u003Eb__2_1",
+    "RelativePath": "api/cart/items",
+    "HttpMethod": "POST",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "req",
+        "Type": "SimpleeCommerceApp.Api.CartEndpoints\u002BAddItemRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.CartEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapCartEndpoints\u003Eb__2_2",
+    "RelativePath": "api/cart/items/{itemId:guid}",
+    "HttpMethod": "PUT",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "itemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      },
+      {
+        "Name": "req",
+        "Type": "SimpleeCommerceApp.Api.CartEndpoints\u002BUpdateQtyRequest",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.CartEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapCartEndpoints\u003Eb__2_3",
+    "RelativePath": "api/cart/items/{itemId:guid}",
+    "HttpMethod": "DELETE",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "itemId",
+        "Type": "System.Guid",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "SimpleeCommerceApp.Api.ProductsEndpoints\u002B\u003C\u003Ec",
+    "Method": "\u003CMapProductsEndpoints\u003Eb__0_0",
+    "RelativePath": "api/products/",
+    "HttpMethod": "GET",
+    "IsController": false,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "q",
+        "Type": "System.String",
+        "IsRequired": false
+      },
+      {
+        "Name": "page",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "pageSize",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Void",
+        "MediaTypes": [],
+        "StatusCode": 200
+      }
+    ]
+  }
+]
